@@ -32,6 +32,3 @@ DDoSCH is a platform used to share DDoS fingerprints. The system is composed of 
 ### Ready-to-go setup
 We have a VM (Virtual Machine) with all the required components to run in a test environment. We named this VM as [DDoSDB-in-a-box](https://github.com/ddos-clearing-house/dddosdb-in-a-box).
 Just spin the VM and you have everything in place. 
-
-## DDoSDB repository
-### Installation process
