@@ -20,8 +20,7 @@
 
 # DDoS Clearing House
 
-DDoSCH is a platform used to share DDoS fingerprints. The system is composed of a set of software modules available in this repository and described in our research  [paper](https://research.utwente.nl/en/publications/ddos-as-a-service-investigating-booter-websites](https://research.utwente.nl/en/publications/ddos-as-a-service-investigating-booter-websites)). 
-
+DDoSCH is a platform used to share DDoS fingerprints. The system is composed of a set of software modules available in this repository and described in our research  [paper](https://research.utwente.nl/en/publications/ddos-as-a-service-investigating-booter-websites).
 
 <p align="center"><img width=80% src="https://raw.githubusercontent.com/ddos-clearing-house/DDOS-CH/main/media/overview.png"></p>
 
