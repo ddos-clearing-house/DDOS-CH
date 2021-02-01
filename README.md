@@ -31,3 +31,7 @@ DDoSCH is a platform used to share DDoS fingerprints. The system is composed of 
 ### Ready-to-go setup
 We have a VM (Virtual Machine) with all the required components to run in a test environment. We named this VM as [DDoSDB-in-a-box](https://github.com/ddos-clearing-house/dddosdb-in-a-box).
 Just spin the VM and you have everything in place. 
+
+### Acknowledge 
+
+The DDoS clearing house can be used by any community of organizations that wishes to collaboratively defend themselves against DDoS attacks. The development of the clearing house was partly funded by the European Union’s Horizon 2020 Research and Innovation program under Grant Agreement No 830927. It will be used by the Dutch National Anti-DDoS Coalition, a self-funded public-private initiative to collaboratively protect Dutch organizations and the wider Internet community from DDoS attacks. Websites: https://www.concordia-h2020.eu/ and https://www.nomoreddos.org/en/
