@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div id="nameContainer" data-partner="{{ partner }}"></div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="content-block">
+                <div style="float: left;">
+                    <h3>DDoS Clearing House Simulation Dashboard</h3>
+                </div>
+                <div style="float: right;">
+                    <h3>
+                        {{ partner|upper }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="content-block" id="green">
+                <h4 style="width: 100%; text-align: center; margin-bottom: 30px">
+                    Start a simulated attack on {{ partner|upper }}
+                </h4>
+                <form id="start-form">
+                    <label for="attacks">Attack type:</label>
+                    <select id="attacks" name="attack" required>
+                        <option value="frag" selected>Fragmentation Attack</option>
+                        <option value="syn">Syn Flood</option>
+                        <option value="udp">UDP Flood</option>
+                    </select>
+                    <br>
+                    <label>Duration in seconds:</label>
+                    <input type="number" id="duration" name="duration" min="0" max="300" value="20" required>
+                    <br>
+                    <label>Traffic speed</label>
+                    <select id="speed" name="speed" required>
+                        <option value="u1000000">1</option>
+                        <option value="u100000" selected>10</option>
+                        <option value="u10000">100</option>
+                        <option value="u1000">1,000</option>
+{#                        <option value="u10">10,000</option>#}
+{#                        <option value="u1">100,000</option>#}
+{#                        <option value="u0">fastest</option>#}
+                    </select> Packets per second
+                    <br>
+                    <label>Destination port</label>
+                    <input type="number" id="port" name="port" min="1" max="65535" value="80" required>
+                </form>
+                <button type="button" data-toggle="modal" data-target="#confirmationModal" class="btn btn-success"
+                        id="to-confirm">
+                    Next
+                </button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="content-block" id="red">
+                <h4 style="width: 100%; text-align: center; margin-bottom: 30px">
+                    Stop traffic
+                </h4>
+                <button id="stop-button" class="btn btn-danger">Stop!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation modal -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">Confirm traffic details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Target: {{ partner|upper }} <br>
+                    Attack type: <span id="modal-attack"></span> <br>
+                    Duration: <span id="modal-duration"></span> seconds <br>
+                    Traffic speed: <span id="modal-speed"></span> packets per second <br>
+                    Destination port: <span id="modal-port"></span> <br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button id="start-button" class="btn btn-success" data-dismiss="modal">Start</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disclaimers -->
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="alert alert-warning" id="disclaimer" role="alert">
+                <h5>WARNING: </h5>
+                <h6>
+                    Disclaimer: this web page is part of a virtual pilot of the DDoS Clearing House. It is meant to
+                    initiate simulated attack traffic to one of the partners of this pilot: {{ partner|upper }}.
+                    In no event is SIDN Labs liable for any claim, damages, or other liability as a result from the
+                    actions performed on this webpage.
+                </h6>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+
+
+{% endblock %}

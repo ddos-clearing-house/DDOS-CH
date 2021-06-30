@@ -1,0 +1,42 @@
+# Attack scripts
+
+This directory contains the scripts that "simulate" various DOS attacks using the hping3 package.
+
+### Entrypoint
+[entrypoint](entrypoint) is the script which is called from the Flask API in the docker container (see the dashboard 
+directory in the repository root). This script takes five parameters:
+1. Attack script: the attack script that should be ran
+2. Partner name: passed implicitly from the partner's dashboard
+3. Duration: duration of the attack in seconds
+4. Port: the port to which to send the attack traffic
+5. Speed: the speed (volume) of the attack, passed as the u+\[number of microseconds between packets] (e.g. u1000 for 
+   100 packets/s)
+   
+The parameters are selected by the user on the dashboard and passed through the Flask API to this entrypoint. The 
+entrypoint will start the attack script on the attack source machines (defined in dashboard.env in the dashboard 
+directory in this repository) through SSH.
+
+### Stop
+[stop](stop) is the script that will stop any traffic coming from the attack source machines (kills the hping3 
+processes). This is called directly from the Flask API in the docker container (see the dashboard directory in the 
+repository root). Like the entrypoint script, it uses SSH to run a command on each attack source machine.
+
+### Attacks
+
+| Attack type          | script                             | details                                                                                                                    |
+|----------------------|------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| Fragmentation attack | virtual_pilot_fragmentation_attack | Runs hping3 with the -f flag for fragmentation, -x to set the 'more fragments' IP header flag and -d 32 for 32 data bytes. |
+| TCP SYN flood attack | virtual_pilot_syn_flood            | Runs hping3 with the -S flag to set the SYN flag in the TCP header                                                         |
+| UDP flood attack     | virtual_pilot_udp_flood            | Runs hping3 with the --udp flag to send UDP packets.                                                                       |
+
+## Attack source machines
+
+Each attack source machine should be configured to have the following:
+- hping3 installed (`sudo apt install hping3`)
+- a user named _admin_
+- /home/admin/authorized_keys with the ssh key of the dashboard server to allow login with password from the dashboard 
+  server
+- Make sure _admin_ can run hping3 (`admin$ sudo chmod u+x /usr/sbin/hping3 && ln -s /usr/sbin/hping3 /usr/bin/hping3`)
+- The contents of this directory should be executable by _admin_ in `/home/admin/attacks`
+
+Add the IP address of the attack source machine to dashboard.env on the server hosting the dashboard.
