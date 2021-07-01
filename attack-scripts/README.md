@@ -5,7 +5,7 @@ This directory contains the scripts that "simulate" various DOS attacks using th
 ### Entrypoint
 [entrypoint](entrypoint) is the script which is called from the Flask API in the docker container (see the dashboard 
 directory in the repository root). This script takes five parameters:
-1. Attack script: the attack script that should be ran
+1. Hping flags: the flags for a particular attack using hping3
 2. Partner name: passed implicitly from the partner's dashboard
 3. Duration: duration of the attack in seconds
 4. Port: the port to which to send the attack traffic
@@ -13,7 +13,7 @@ directory in the repository root). This script takes five parameters:
    100 packets/s)
    
 The parameters are selected by the user on the dashboard and passed through the Flask API to this entrypoint. The 
-entrypoint will start the attack script on the attack source machines (defined in dashboard.env in the dashboard 
+entrypoint will start hping3 on the attack source machines (defined in dashboard.env in the dashboard 
 directory in this repository) through SSH.
 
 ### Stop
@@ -23,11 +23,11 @@ repository root). Like the entrypoint script, it uses SSH to run a command on ea
 
 ### Attacks
 
-| Attack type          | script                             | details                                                                                                                    |
-|----------------------|------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| Fragmentation attack | virtual_pilot_fragmentation_attack | Runs hping3 with the -f flag for fragmentation, -x to set the 'more fragments' IP header flag and -d 32 for 32 data bytes. |
-| TCP SYN flood attack | virtual_pilot_syn_flood            | Runs hping3 with the -S flag to set the SYN flag in the TCP header                                                         |
-| UDP flood attack     | virtual_pilot_udp_flood            | Runs hping3 with the --udp flag to send UDP packets.                                                                       |
+| Attack type          | details                                                                                                                    |
+|----------------------| ----------------------------------------------------------------------------------------------------------------------------|
+| Fragmentation attack | Runs hping3 with the -f flag for fragmentation, -x to set the 'more fragments' IP header flag and -d 32 for 32 data bytes. |
+| TCP SYN flood attack | Runs hping3 with the -S flag to set the SYN flag in the TCP header                                                         |
+| UDP flood attack     | Runs hping3 with the --udp flag to send UDP packets.                                                                       |
 
 ## Attack source machines
 

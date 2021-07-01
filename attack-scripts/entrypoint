@@ -2,8 +2,8 @@
 # This script is ran from the docker container running flask. /ips is mounted from /home/admin/ips
 # Called in /dashboard/flask/app/api/resources.Start:post
 
-ATTACK_SCRIPT=$1
-echo "Attack script: $ATTACK_SCRIPT"
+FLAGS=$1
+echo "Hping3 flags: $FLAGS"
 
 [ ! -f /ips/"$2" ] && echo "Cannot find target IP for $2" && exit 1
 
@@ -37,8 +37,8 @@ echo "Speed: $SPEED"
 
 ( IFS=:
 	for NODE in $SOURCE_IPS; do
-			echo "Starting script on source machine $NODE"
-			ssh -o StrictHostKeyChecking=no admin@$NODE "timeout ${DURATION}s $ATTACK_SCRIPT $TARGET_IP $DURATION $PORT $SPEED" &
+			echo "Starting hping3 on source machine $NODE"
+			ssh -o StrictHostKeyChecking=no admin@$NODE "timeout ${DURATION}s hping3 -p $PORT $TARGET_IP $FLAGS -i $SPEED" &
 	done
 )
 

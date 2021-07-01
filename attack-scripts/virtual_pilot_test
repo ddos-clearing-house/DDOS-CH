@@ -1,9 +1,0 @@
-#!/bin/bash
-# Script used to test the dashboard, API, and entrypoint script.
-# curls my website once per second (which I can monitor through its nginx logs)
-
-while true; do
-  curl --ipv4 tvdh.dev > /dev/null;
-  sleep 1
-done
-
