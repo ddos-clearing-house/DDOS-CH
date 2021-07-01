@@ -26,7 +26,7 @@ class Start(Resource):
     @staticmethod
     def post(partner: str):
         if partner not in os.getenv('PARTNERS').split(':'):
-            return {'error': f'partner {partner} is not in the list of partners in this pilot.'}, 400
+            return {'Error': f'partner {partner} is not in the list of partners in this pilot.'}, 400
 
         parser = reqparse.RequestParser()
         parser.add_argument('attack', choices=['frag', 'syn', 'udp', 'test'], required=True)
@@ -42,21 +42,21 @@ class Start(Resource):
         if type(args.port) != int or args.port < 1 or args.port > 65535:
             return {'Error': 'Duration must be a positive integer under 300.'}, 400
 
-        scripts = {
-            'frag': '/home/admin/attacks/virtual_pilot_fragmentation_attack',
-            'syn': '/home/admin/attacks/virtual_pilot_syn_flood',
-            'udp': '/home/admin/attacks/virtual_pilot_udp_flood',
-            'test': '/home/admin/attacks/virtual_pilot_test'
+        hping_flags = {
+            # Read data from /etc/services, send packets with 1 byte of data, frag
+            'frag': '-E /etc/services -d 128 -f',
+            'syn': '-S',  # enable SYN flag
+            'udp': '--udp',  # Use UDP protocol
         }
         try:
-            instructions = f"/bin/bash /attacks/entrypoint {scripts[args.attack]} {partner} {args.duration} " \
+            instructions = f"/bin/bash /attacks/entrypoint {hping_flags[args.attack]} {partner} {args.duration} " \
                            f"{args.port} {args.speed}"
             print(instructions)
             asyncio.run(command(instructions))
         except KeyError:
             return {'Error': 'Invalid attack type.'}, 400
 
-        return {'message': f'Started {scripts[args.attack]}!'}, 200
+        return {'message': f'Started hping3 with flags {hping_flags[args.attack]}!'}, 200
 
 
 class Stop(Resource):

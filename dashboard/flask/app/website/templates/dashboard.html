@@ -17,6 +17,27 @@
         </div>
     </div>
 
+    <!-- Alert banners -->
+    <div class="row" style="margin-top: -20px">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 collapse" id="alert-duration">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Invalid duration:</strong> The duration in seconds should be between 1 and 300.
+            </div>
+        </div>
+        <div class="col-md-8 collapse" id="alert-port">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Invalid port:</strong> The destination post should be between 1 and 65535.
+            </div>
+        </div>
+        <div class="col-md-8 collapse" id="alert-busy">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Busy:</strong> traffic is currently being sent.
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
     <div class="row">
         <div class="col-md-8">
             <div class="content-block" id="green">
@@ -31,15 +52,15 @@
                             </td>
                             <td>
                                 <select id="attacks" name="attack" required>
-                                    <option value="frag" selected>Fragmentation Attack</option>
+                                    <option value="udp" selected>UDP Flood</option>
+                                    <option value="frag">Fragmentation Attack</option>
                                     <option value="syn">Syn Flood</option>
-                                    <option value="udp">UDP Flood</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <label>Duration in seconds:</label>
+                                <label for="duration">Duration in seconds:</label>
                             </td>
                             <td>
                                 <input type="number" id="duration" name="duration" min="0" max="300" value="20"
@@ -48,7 +69,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <label>Traffic speed:</label>
+                                <label for="speed">Traffic speed:</label>
                             </td>
                             <td>
                                 <select id="speed" name="speed" required>
@@ -64,7 +85,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <label>Destination port:</label>
+                                <label for="port">Destination port:</label>
                             </td>
                             <td>
                                 <input type="number" id="port" name="port" min="1" max="65535" value="80" required>
@@ -72,18 +93,37 @@
                         </tr>
                     </table>
                 </form>
-                <button type="button" data-toggle="modal" data-target="#confirmationModal" class="btn btn-success"
-                        id="to-confirm">
+                <button type="button" class="btn btn-success" id="to-confirm">
                     Next
                 </button>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="content-block" id="red" style="text-align: center">
-                <h4 style="width: 100%; text-align: center; margin-bottom: 30px">
-                    Stop traffic
-                </h4>
-                <button id="stop-button" class="btn btn-danger">Stop!</button>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="content-block" id="red" style="text-align: center">
+                        <h4 style="width: 100%; text-align: center; margin-bottom: 30px">
+                            Stop traffic
+                        </h4>
+                        <button id="stop-button" class="btn btn-danger">Stop!</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 collapse" id="count-down-alert">
+                    <div class="alert alert-success fade show" id="disclaimer" role="alert">
+                        <h6>
+                           <strong>Sending traffic... </strong> <span id="count-down"></span> more seconds.
+                        </h6>
+                    </div>
+                </div>
+                <div class="col-md-12 collapse" id="staffic-stopped-alert">
+                    <div class="alert alert-danger fade show" id="disclaimer" role="alert" style="text-align: center">
+                        <h6>
+                           <strong>Traffic stopped</strong>
+                        </h6>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -95,9 +135,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="confirmationModalLabel">Confirm traffic details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <table>
@@ -143,10 +181,12 @@
                             </td>
                         </tr>
                     </table>
+                    <br>Five identical machines will <i>each</i> send this traffic to the target.
+                    <br>You will be prompted for your credentials again on start.
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button id="start-button" class="btn btn-success" data-dismiss="modal">Start</button>
+                    <button type=button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button id="start-button" type=button class="btn btn-success" data-bs-dismiss="modal">Start</button>
                 </div>
             </div>
         </div>
@@ -157,12 +197,14 @@
         <div class="col-md-1"></div>
         <div class="col-md-10">
             <div class="alert alert-warning" id="disclaimer" role="alert">
-                <h5>WARNING: </h5>
+                <h5>WARNING</h5>
                 <h6>
                     Disclaimer: this web page is part of a virtual pilot of the DDoS Clearing House. It is meant to
-                    initiate simulated attack traffic to one of the partners of this pilot: {{ partner|upper }}.
-                    In no event is SIDN Labs liable for any claim, damages, or other liability as a result from the
-                    actions performed on this webpage.
+                    initiate simulated DDoS traffic to one of the partners of this pilot: {{ partner|upper }}. The
+                    goal of sending test traffic is solely to test the DDoS Clearing House; not to send a <i>real</i>
+                    DDoS attack to load test the target. Traffic will originate from five identical sources in
+                    parallel. In no event is SIDN (Labs) liable for any claim, damages, or other liability as a result
+                    from the actions performed on this webpage.
                 </h6>
             </div>
         </div>

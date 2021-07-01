@@ -1,27 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="row">
-        <div class="col-md-12">
-            <div class="content-block">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="content-block" style="text-align: center">
                 <div>
                     <h3>DDoS Clearing House Simulation Dashboard</h3>
                 </div>
             </div>
         </div>
+        <div class="col-md-2"></div>
     </div>
 
     <div class="row">
-        <div class="col-md-12">
-            <div class="content-block">
-                <div style="float: left;">
-                    <h3>Visit your dashboard:</h3><br>
-                    {% for partner in partners %}
-                    <a href="/{{ partner|lower }}"><button class="btn btn-primary">{{ partner|upper }}</button></a>
-                    {% endfor %}
-                </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="content-block" style="text-align: center">
+                <h3>Visit your dashboard:</h3><br>
+                {% for partner in partners %}
+                    <form action="/{{ partner|lower }}" style="display:inline;">
+                        <input type="submit" value="{{ partner|upper }}" class="btn btn-primary"
+                               style="display: inline">
+                    </form>
+                {% endfor %}
             </div>
         </div>
+        <div class="col-md-2"></div>
     </div>
-
-
 {% endblock %}
