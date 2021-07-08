@@ -29,7 +29,7 @@ class Start(Resource):
             return {'Error': f'partner {partner} is not in the list of partners in this pilot.'}, 400
 
         parser = reqparse.RequestParser()
-        parser.add_argument('attack', choices=['frag', 'syn', 'udp', 'test'], required=True)
+        parser.add_argument('attack', choices=['frag', 'syn', 'udp', 'tcp'], required=True)
         parser.add_argument('duration', type=int, required=True)
         parser.add_argument('port', type=int, required=True)
         parser.add_argument('speed', choices=['u100000', 'u10000', 'u1000', 'u100', 'u10', 'u1', 'u0'],
@@ -44,13 +44,14 @@ class Start(Resource):
 
         hping_flags = {
             # Read data from /etc/services, send packets with 1 byte of data, frag
-            'frag': '-E /etc/services -d 128 -f',
+            'tcp': '',
+            'frag': '--frag -d 1',
             'syn': '-S',  # enable SYN flag
             'udp': '--udp',  # Use UDP protocol
         }
         try:
-            instructions = f"/bin/bash /attacks/entrypoint {hping_flags[args.attack]} {partner} {args.duration} " \
-                           f"{args.port} {args.speed}"
+            instructions = f'/bin/bash /attacks/entrypoint "{hping_flags[args.attack]}" {partner} {args.duration} ' \
+                           f'{args.port} {args.speed}'
             print(instructions)
             asyncio.run(command(instructions))
         except KeyError:
