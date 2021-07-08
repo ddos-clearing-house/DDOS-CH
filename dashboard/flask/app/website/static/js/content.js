@@ -6,11 +6,10 @@ $("#start-button").on('click', (event) => {
     const req = new XMLHttpRequest();
     req.onreadystatechange = handleError;
     const formData = new FormData($("#start-form")[0]);
-    req.open("POST", `https://api.ddosclearinghouse.eu/${partner}/start`, true);
+    req.open("POST", `https://api.ddosclearinghouse.eu/${partner}/start`, false);
     req.withCredentials = true;
     req.send(formData);
 
-    // TODO: function cooldown (attack duration or until stop)
     const duration = $("input#duration").val()
     $("#count-down").html(duration);
     $("#count-down-alert").removeClass('collapse');
