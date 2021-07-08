@@ -53,6 +53,7 @@
                             <td>
                                 <select id="attacks" name="attack" required>
                                     <option value="udp" selected>UDP Flood</option>
+                                    <option value="tcp">TCP flood</option>
                                     <option value="frag">Fragmentation Attack</option>
                                     <option value="syn">Syn Flood</option>
                                 </select>
@@ -199,12 +200,12 @@
             <div class="alert alert-warning" id="disclaimer" role="alert">
                 <h5>WARNING</h5>
                 <h6>
-                    Disclaimer: this web page is part of a virtual pilot of the DDoS Clearing House. It is meant to
+                    Disclaimer: this web page is part of a pilot of the DDoS Clearing House. It is meant to
                     initiate simulated DDoS traffic to one of the partners of this pilot: {{ partner|upper }}. The
                     goal of sending test traffic is solely to test the DDoS Clearing House; not to send a <i>real</i>
                     DDoS attack to load test the target. Traffic will originate from five identical sources in
                     parallel. In no event is SIDN (Labs) liable for any claim, damages, or other liability as a result
-                    from the actions performed on this webpage.
+                    from the actions performed on this web page.
                 </h6>
             </div>
         </div>
